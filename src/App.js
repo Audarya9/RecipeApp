@@ -1,26 +1,24 @@
 import logo from './logo.svg';
 import './App.css';
 import { useState, useEffect } from 'react';
+import Recipe from './Recipe';
 
 function App() {
   
   const APP_ID = "d01d9b59";
   const APP_KEY = "16571a9aaaee4b0e931446c6649d1b02";
 
-  const exmapleReq = `https://api.edamam.com/search?q=chicken&app_id=${APP_ID}&app_key=${APP_KEY}`;
-
-  const [counter,setCounter] = useState(0);
-
-  const [recipe,setRecipe] = useStates([]);
+  
+  const [recipe,setRecipe] = useState([]);
 
   useEffect(()=>{
-    console.log('run hui gaba');
-  },[counter]);
+    getRecipe();
+  },[]);
 
   const getRecipe = async ()=>{
-    const response = await fetch(exmapleReq);
-    const data = response.json();
-    setReciepes(data.hits);
+    const response = await fetch(`https://api.edamam.com/search?q=chicken&app_id=${APP_ID}&app_key=${APP_KEY}`);
+    const data = await response.json();
+    setRecipe(data.hits);
   };
 
 
@@ -32,7 +30,9 @@ function App() {
           Search
         </button>
       </form>
-      <h1 onClick={()=>{setCounter(counter + 1)}}>{counter}</h1>
+      {recipe.map(recipe =>{
+        <Recipe/>
+      })}
     </div>
   );
 }
